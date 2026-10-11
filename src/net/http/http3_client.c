@@ -35,9 +35,9 @@
 #include <openssl/evp.h>
 
 #include <lsquic.h>
-/* The WebTransport client is experimental and lives on dev. On main,
- * CWIST_WEBTRANSPORT enables the WebTransport server only; the client code
- * below stays behind its own macro, which main refuses (see Makefile). */
+/* The WebTransport client is experimental and lives on dev. It needs
+ * lsquic_wt.h, which main's lsquic does not have, so the Makefile refuses
+ * CWIST_WEBTRANSPORT=client here; main builds CWIST_WEBTRANSPORT=server. */
 #ifdef CWIST_WEBTRANSPORT_CLIENT
 #error "the WebTransport client is experimental and not built on main"
 #include <lsquic_wt.h>
