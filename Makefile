@@ -143,6 +143,24 @@ ifeq ($(CWIST_WEBRTC),1)
     CFLAGS += -DCWIST_WEBRTC -I$(USRSCTP_DIR)/usrsctplib
 endif
 
+# WebTransport over HTTP/3. On main this enables the WebTransport *server*
+# only (cwist_app_use_webtransport / cwist_http3_set_webtransport_handler).
+# The WebTransport client is experimental and lives on dev; main never
+# builds it (http3_client.c keeps it behind CWIST_WEBTRANSPORT_CLIENT, which
+# is refused here). The server needs an lsquic with WebTransport support
+# (lsquic_wt.h, LSQUIC PR #629): lib/lsquic must point at such a revision
+# when CWIST_WEBTRANSPORT=1. Off by default; run `make clean` after toggling.
+CWIST_WEBTRANSPORT ?= 0
+ifeq ($(CWIST_WEBTRANSPORT),1)
+    ifeq ($(wildcard $(LSQUIC_DIR)/include/lsquic_wt.h),)
+        $(error CWIST_WEBTRANSPORT=1 needs an lsquic with WebTransport support: $(LSQUIC_DIR)/include/lsquic_wt.h is missing)
+    endif
+    CFLAGS += -DCWIST_WEBTRANSPORT
+endif
+ifneq ($(filter -DCWIST_WEBTRANSPORT_CLIENT%,$(CFLAGS)),)
+    $(error the WebTransport client is experimental and not built on main)
+endif
+
 # Detect OS
 IO_SRC = src/sys/io/io_select.c # Default fallback
 

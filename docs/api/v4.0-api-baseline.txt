@@ -4,7 +4,7 @@
 # enum constants, extern globals. Struct layouts are tested
 # separately by tests/abi_layout*.
 
-== functions (766) ==
+== functions (754) ==
 cwist_accept_socket
 cwist_alloc
 cwist_alloc_array
@@ -313,11 +313,9 @@ cwist_http3_client_set_max_retries
 cwist_http3_client_set_retry_delay_ms
 cwist_http3_client_set_server
 cwist_http3_client_set_timeout_ms
-cwist_http3_client_webtransport_connect
 cwist_http3_destroy_context
 cwist_http3_init_context
 cwist_http3_init_context_ephemeral
-cwist_http3_last_close_error
 cwist_http3_push_resource
 cwist_http3_send_datagram
 cwist_http3_server_loop
@@ -748,16 +746,6 @@ cwist_websocket_send
 cwist_websocket_send_sequenced
 cwist_websocket_upgrade
 cwist_websocket_upgrade_response
-cwist_webtransport_client_close
-cwist_webtransport_client_is_open
-cwist_webtransport_client_open_bidi
-cwist_webtransport_client_open_uni
-cwist_webtransport_client_poll
-cwist_webtransport_client_send_datagram
-cwist_webtransport_client_stream_close
-cwist_webtransport_client_stream_flush
-cwist_webtransport_client_stream_read
-cwist_webtransport_client_stream_write
 cwist_webtransport_close_session
 cwist_webtransport_close_stream
 cwist_webtransport_flush
@@ -772,7 +760,7 @@ cwist_zod_parse
 cwist_zod_print_errors
 cwist_zod_validate
 
-== types (struct/union/enum names) (151) ==
+== types (struct/union/enum names) (150) ==
 __natsConnection
 __prim_cwist_error_t
 bdr_blob_t
@@ -918,14 +906,13 @@ cwist_webrtc_conn
 cwist_webrtc_ctx
 cwist_websocket
 cwist_websocket_async
-cwist_webtransport_client_session
 cwist_ws_frame
 cwist_zod_error
 cwist_zod_result
 quic_conn_fc
 quic_stream_fc
 
-== typedefs (203) ==
+== typedefs (202) ==
 __prim_cwist_error_t
 bdr_blob_t
 bdr_entry_t
@@ -1114,7 +1101,6 @@ cwist_webrtc_data_type
 cwist_webrtc_message_cb
 cwist_websocket
 cwist_websocket_async
-cwist_webtransport_client_session
 cwist_webtransport_handler_func
 cwist_write_status_t
 cwist_ws_frame

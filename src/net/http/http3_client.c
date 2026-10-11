@@ -35,7 +35,11 @@
 #include <openssl/evp.h>
 
 #include <lsquic.h>
-#ifdef CWIST_WEBTRANSPORT
+/* The WebTransport client is experimental and lives on dev. On main,
+ * CWIST_WEBTRANSPORT enables the WebTransport server only; the client code
+ * below stays behind its own macro, which main refuses (see Makefile). */
+#ifdef CWIST_WEBTRANSPORT_CLIENT
+#error "the WebTransport client is experimental and not built on main"
 #include <lsquic_wt.h>
 #endif
 #include <lsxpack_header.h>
@@ -102,12 +106,12 @@ typedef struct h3c_stream_ctx {
     int headers_done;
     int response_ready;
     int write_done;
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
     int is_webtransport_connect;
 #endif
 } h3c_stream_ctx_t;
 
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
 struct cwist_webtransport_client_session {
     lsquic_wt_session_t *native;
     struct cwist_http3_client *client;
@@ -148,7 +152,7 @@ struct cwist_http3_client {
         size_t len;
         int ready;
     } in_dgram;
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
     cwist_webtransport_client_session *wt_connecting;
 #endif
 };
@@ -350,7 +354,7 @@ static lsquic_stream_ctx_t *h3c_on_new_stream(void *stream_if_ctx, lsquic_stream
     return (lsquic_stream_ctx_t *)st;
 }
 
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
 /**
  * @brief WebTransport callback: session opened after a successful CONNECT.
  * @return The cwist_webtransport_client_session as session context.
@@ -471,7 +475,7 @@ static void h3c_on_read(lsquic_stream_t *stream, lsquic_stream_ctx_t *st_h) {
                 free(name);
             }
             st->headers_done = 1;
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
             if (st->is_webtransport_connect) {
                 cwist_http3_client *client =
                     (cwist_http3_client *)lsquic_conn_get_ctx(lsquic_stream_conn(stream));
@@ -866,7 +870,7 @@ cwist_http3_client *cwist_http3_client_create(void) {
     settings.es_pace_packets = 1;
     settings.es_optimistic_nat = 1;
     settings.es_datagrams = client->datagram_enabled ? 1 : 0;
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
     settings.es_webtransport = 1;
     settings.es_max_webtransport_sessions = 4;
     settings.es_http_datagrams = 1;
@@ -923,7 +927,7 @@ void cwist_http3_client_destroy(cwist_http3_client *client) {
     free(client->host);
     free(client->out_dgram.data);
     free(client->in_dgram.data);
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
     free(client->wt_connecting);
 #endif
     pthread_mutex_destroy(&client->dgram_mtx);
@@ -1112,7 +1116,7 @@ cwist_error_t cwist_http3_client_request(cwist_http3_client *client, const char 
         }
         st->req_method = method;
         st->req_headers = headers;
-#ifdef CWIST_WEBTRANSPORT
+#ifdef CWIST_WEBTRANSPORT_CLIENT
         for (cwist_http_header_node *header = headers; header; header = header->next) {
             if (header->key && header->value && header->key->data && header->value->data &&
                 strcasecmp(header->key->data, ":protocol") == 0 &&
