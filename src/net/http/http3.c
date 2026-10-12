@@ -3010,7 +3010,7 @@ cwist_error_t cwist_http3_server_loop(int udp_fd, cwist_http3_context *ctx,
     ctx->engine = engine;
     ctx->handler = handler;
     ctx->user_ctx = user_ctx;
-    ctx->running = 1;
+    __atomic_store_n(&ctx->running, 1, __ATOMIC_RELEASE);
 
     /* The receive loop relies on MSG_DONTWAIT, which some platforms lack
      * (it degrades to 0).  Guarantee non-blocking semantics at the socket
@@ -3109,7 +3109,10 @@ cwist_error_t cwist_http3_server_loop(int udp_fd, cwist_http3_context *ctx,
     }
 #endif
 
-    while (ctx && ctx->running && atomic_load(&g_cwist_running)) {
+    /* running is a public volatile int another thread clears to stop the
+     * loop; access it atomically (#351). */
+    while (ctx && __atomic_load_n(&ctx->running, __ATOMIC_ACQUIRE) &&
+           atomic_load(&g_cwist_running)) {
         int diff = 100000;
         int timeout_ms = 50;
         bool has_tick = lsquic_engine_earliest_adv_tick(engine, &diff);
