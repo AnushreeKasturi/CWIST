@@ -876,6 +876,7 @@ TEST_TARGETS = test_worker_affinity \
                test_reactor_wake \
                test_classic_pool_scaling \
                test_reactor_timer \
+               test_rx_epoll \
                test_reactor_drain_chunk \
                test_reactor_late \
                test_latency_probe \
@@ -1081,6 +1082,11 @@ test_classic_pool_scaling: $(LIB_NAME) tests/test_classic_pool_scaling.c
 	./$@ multi
 	./$@ cap
 	./$@ failure
+
+# RX-epoll receive path (reactor_rx.h) on a forced epoll reactor.
+test_rx_epoll: tests/test_rx_epoll.c src/sys/io/reactor.c src/sys/io/reactor_rx.h
+	$(CC) $(CFLAGS) -o $@ tests/test_rx_epoll.c -pthread
+	./$@
 
 # Cooperative-queuing correctness test (issue #25): CWIST_REACTOR_DRAIN_CHUNK
 # interleaves foreign-thread post draining into a big CQE batch instead of
