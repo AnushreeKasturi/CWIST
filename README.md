@@ -155,12 +155,12 @@ int main(void) {
 
 <!-- WEBSERVER_BENCHMARKS:START -->
 Latest Web Server Benchmark (wrk -t12 -c400 -d10s (after 10s warmup, warmup discarded)):
-- **CWIST Classic pool**: 113429 req/s | Latency 2.03ms (P90 4.03ms, P99 7.12ms, P99.999 21.63ms) | RSS 59896KiB | Csw 1088897
-- **CWIST reactor**: 134089 req/s | Latency 2.94ms (P90 5.23ms, P99 8.13ms, P99.999 14.05ms) | RSS 20596KiB | Csw 117696
-- **Actix**: 129238 req/s | Latency 3.02ms (P90 5.07ms, P99 7.69ms, P99.999 14.84ms) | RSS 12112KiB | Csw 143548
-- **Axum**: 109565 req/s | Latency 3.58ms (P90 6.00ms, P99 8.83ms, P99.999 16.94ms) | RSS 15456KiB | Csw 203642
-- **Gin (Go)**: 80642 req/s | Latency 6.28ms (P90 14.82ms, P99 30.87ms, P99.999 70.28ms) | RSS 30412KiB | Csw 275888
-- **Spring Boot**: 43938 req/s | Latency 9.09ms (P90 11.44ms, P99 18.89ms, P99.999 90.68ms) | RSS 1315060KiB | Csw 223375
+- **CWIST Classic pool**: 188898 req/s | Latency 1.25ms (P90 2.60ms, P99 5.59ms, P99.999 25.90ms) | RSS 59516KiB | Csw 1800177
+- **CWIST reactor**: 214530 req/s | Latency 1.92ms (P90 3.89ms, P99 6.48ms, P99.999 12.70ms) | RSS 20660KiB | Csw 190207
+- **Actix**: 219878 req/s | Latency 1.88ms (P90 3.79ms, P99 6.47ms, P99.999 13.64ms) | RSS 12240KiB | Csw 225953
+- **Axum**: 198552 req/s | Latency 1.98ms (P90 3.62ms, P99 5.64ms, P99.999 11.51ms) | RSS 16420KiB | Csw 336630
+- **Gin (Go)**: 152110 req/s | Latency 3.32ms (P90 7.91ms, P99 16.01ms, P99.999 33.08ms) | RSS 31832KiB | Csw 440379
+- **Spring Boot**: 123247 req/s | Latency 3.21ms (P90 4.72ms, P99 6.74ms, P99.999 40.35ms) | RSS 1315904KiB | Csw 433478
 
 _Settled CWIST-internal tuning variants (glibc arena cap from PR #35, cooperative drain chunk from issue #25) are recorded in docs/cooperative-queuing.md and benchmarks/webserver.json; they are no longer rendered as comparison rows._
 
@@ -212,7 +212,7 @@ GitHub hands out a different CPU model per run, which moves these numbers more t
 |---|---:|---:|---:|---:|---:|---:|
 | AMD EPYC 7763 64-Core Processor | 46 | 2.05 | 2.98 | 3.55 | 140,049 | 110,453 |
 | AMD EPYC 9V74 80-Core Processor | 16 | 1.63 | 2.57 | 2.63 | 180,539 | 149,804 |
-| AMD EPYC 9V45 96-Core Processor | 9 | 1.28 | 2.30 | 1.99 | 218,335 | 196,379 |
+| AMD EPYC 9V45 96-Core Processor | 9 | 1.27 | 2.30 | 1.99 | 218,335 | 196,379 |
 | Intel(R) Xeon(R) 6973P-C | 5 | 0.97 | 1.88 | 1.66 | 296,517 | 238,006 |
 | INTEL(R) XEON(R) PLATINUM 8573C | 4 | 1.12 | 1.94 | 1.88 | 267,459 | 210,991 |
 | Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz | 2 | 1.40 | 2.29 | 2.35 | 201,973 | 167,709 |
