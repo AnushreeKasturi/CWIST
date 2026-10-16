@@ -578,9 +578,9 @@ needs a recorded decision before the cut.
 
 | Item | Current state | Decision needed |
 |------|---------------|-----------------|
-| WASM component pipeline (#203) | Experimental; deferred to v4.0 in v3.8 Phase 4; gated on WASI 0.3 / unflagged JSPI | Promote at v4.0, or ship v4.0 with it marked experimental and outside the guarantee |
-| `cwist_http3_set_stream_priority()` | `@deprecated` in `http3.h`; kept for ABI compatibility; always logs a warning and returns -1 | Remove before the cut, or keep it with the always-refuse behavior as its permanent contract |
-| `cwist_http_stringify_response()` | Declared in `http.h` without a deprecation marker; a source comment in `http.c` calls it "Deprecated / Debug only"; covered by `test_http_stringify` | Keep it as supported API and drop the comment, or mark it deprecated and remove it before the cut |
+| WASM component pipeline (#203) | Experimental; gated on WASI 0.3 / unflagged JSPI | **Decided (2026-10-10):** ship v4.0 with it experimental and outside the guarantee; promotion re-evaluated at v4.1 |
+| `cwist_http3_set_stream_priority()` | `@deprecated` in `http3.h`; kept for ABI compatibility; always logs a warning and returns -1 | **Decided (2026-10-10):** kept with the always-refuse behavior as its permanent contract for v4.0 |
+| `cwist_http_stringify_response()` | Declared in `http.h`; covered by `test_http_stringify` | **Decided (2026-10-10):** revived as supported API; deprecated comment dropped from `http.c` |
 | WebTransport client API (`http3_client.h`) | Marked experimental (LSQUIC PR #629) | None for v4.0: stays experimental and outside the guarantee until v4.1 |
 | WebTransport symbols in the baseline (#338) | Declared unconditionally in `http3.h`, `http3_client.h` and `app.h` | **Decided (2026-10-11):** recorded in the baseline's separate "experimental" sections, outside the guarantee. Every declared symbol is defined in every build: a role left out of `CWIST_WEBTRANSPORT` gets stubs that fail, never a missing symbol. main declares only the server API (its lsquic has no `lsquic_wt.h`); the client API and `test_webtransport_client_api`, which links every client function, live on dev |
 | `cwist_app.wt_handler` field (#338) | Part of the public `cwist_app` layout that v4.0 freezes | **Decided (2026-10-11):** stays in the frozen layout as-is. It is set only by `cwist_app_use_webtransport()` and ignored by builds without the server role, so the layout does not depend on build flags |
