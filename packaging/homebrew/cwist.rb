@@ -25,8 +25,8 @@ class Cwist < Formula
   uses_from_macos "curl"
 
   def install
-    system "make", "-j#{ENV.make_jobs}", "VERSION=3.9.1"
-    system "make", "install", "PREFIX=#{prefix}", "VERSION=3.9.1"
+    system "make", "-j#{ENV.make_jobs}", "VERSION=4"
+    system "make", "install", "PREFIX=#{prefix}", "VERSION=4"
   end
 
   test do
