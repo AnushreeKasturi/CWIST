@@ -4,7 +4,7 @@
 # (parameter names dropped) and struct/union/enum layouts in member order.
 # `make api-check` (CI) fails when the headers no longer match this file.
 
-== functions (776) ==
+== functions (777) ==
 cwist_accept_socket
 cwist_alloc
 cwist_alloc_array
@@ -660,6 +660,7 @@ cwist_release_guard_acquire
 cwist_release_guard_init
 cwist_sanitize_html
 cwist_sched_p2c_select_worker
+cwist_scheduler_cancel_pending
 cwist_scheduler_create
 cwist_scheduler_destroy
 cwist_scheduler_pending_count
@@ -782,7 +783,7 @@ cwist_zod_parse
 cwist_zod_print_errors
 cwist_zod_validate
 
-== function signatures (777) ==
+== function signatures (778) ==
 cwist_accept_socket: cwist_error_t (int, struct sockaddr *, void (*)(int client_fd, void *ctx), void *)
 cwist_alloc: void * (size_t)
 cwist_alloc_array: void * (size_t, size_t)
@@ -1439,6 +1440,7 @@ cwist_release_guard_acquire: bool (cwist_release_guard_t *)
 cwist_release_guard_init: void (cwist_release_guard_t *)
 cwist_sanitize_html: char * (const char *)
 cwist_sched_p2c_select_worker: uint32_t (const _Atomic uint32_t *, uint32_t)
+cwist_scheduler_cancel_pending: size_t (cwist_scheduler_t *, cwist_scheduler_drop_cb)
 cwist_scheduler_create: cwist_scheduler_t * (size_t, size_t)
 cwist_scheduler_destroy: void (cwist_scheduler_t *)
 cwist_scheduler_pending_count: size_t (cwist_scheduler_t *)
@@ -1740,7 +1742,7 @@ cwist_zod_result
 quic_conn_fc
 quic_stream_fc
 
-== typedefs (204) ==
+== typedefs (205) ==
 __prim_cwist_error_t
 bdr_blob_t
 bdr_entry_t
@@ -1900,6 +1902,7 @@ cwist_redis_reply_t
 cwist_redis_t
 cwist_release_guard_t
 cwist_route_table
+cwist_scheduler_drop_cb
 cwist_scheduler_t
 cwist_schema_field_t
 cwist_schema_t
