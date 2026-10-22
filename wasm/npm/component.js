@@ -28,8 +28,14 @@
 const { buildRequestBytes, parseResponseBytes } = require('./index.js');
 
 /* Internal: the dispatch runner behind each stream host. Kept off the host
- * object so the host is exactly the shape of the WIT import. */
-const STREAM_RUNNERS = new WeakMap();
+ * object so the host is exactly the shape of the WIT import.
+ *
+ * The registry must live on globalThis: a bundler (esbuild alias, webpack)
+ * inlines a second copy of this module into the guest bundle when the host
+ * import references createStreamHost(), while the consumer's adapter comes
+ * from the npm package — two module instances, two WeakMaps, and the lookup
+ * in stream() would miss every registration made through the bundled copy. */
+const STREAM_RUNNERS = (globalThis.__cwistStreamRunners ||= new WeakMap());
 
 /* jco turns a thrown value carrying `payload` into the err arm of the
  * import's result<_, string>; the guest then aborts the dispatch. */
